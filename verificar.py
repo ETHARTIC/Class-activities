@@ -22,9 +22,12 @@ def correr(archivo, *argumentos):
 
 if __name__ == "__main__":
     correr("datos/obtener.py", "transito", "playas", "residuos")
+    correr("recetas/clase03_desafio.py", "guardar")
+    correr("recetas/clase03_desafio.py", "revisar")
     for archivo in ["datos/generar_caja.py", "funciones/datos.py",
                     "recetas/objetos_a_ciegas.py", "recetas/clase03_crear_y_cargar.py",
                     "recetas/carga_y_perfilado.py", "recetas/clase14_series.py",
+                    "recetas/clase14_graficos.py", "recetas/clase15_experimento.py",
                     "Actividades-de-clase/scripts/clase12_ejercicios(1).py"]:
         correr(archivo)
     d = pd.read_csv(RAIZ / "datos/crudos/transito_aire_junio2024.csv")

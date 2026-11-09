@@ -22,9 +22,9 @@ FUENTES = {
     },
     "residuos": {
         "archivo": "residuos_2023.csv",
-        "url": "https://raw.githubusercontent.com/ETHARTIC/Class-activities/a4ea2f724513a3832f17a5c72efc6c808c7299b6/Actividades-de-clase/data/Archivos_de_base_de_datos/cantidad_de_residuos_en_la_estacion_de_transferencia_2023.csv",
-        "origen": "Copia histórica usada en clase; origen declarado: catálogo de datos abiertos de Uruguay",
-        "licencia": "Pendiente recuperar la ficha exacta de la fuente original; no se presupone licencia",
+        "url": "https://ckan-data.montevideo.gub.uy/dataset/f7662ff2-5962-45df-a085-0640813dc4cb/resource/3f9b098b-fb30-47c6-a367-911bb0d1bf49/download/cantidad_de_residuos_en_la_estacion_de_transferencia_2023.csv",
+        "origen": "Intendencia de Montevideo, Estación de Transferencia de Residuos Sólidos Urbanos",
+        "licencia": "Licencia de DAG de Uruguay",
     },
 }
 

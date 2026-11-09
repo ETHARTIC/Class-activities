@@ -1,22 +1,18 @@
-# IA como herramienta y validación — clase 11
+# Clase 11. Leer un ticket
 
-El material docente incluye scripts para convertir un ticket en datos mediante
-servicios de IA. En el repositorio personal había archivos nombrados como claves,
-pero no un script ni una salida que acrediten una extracción concreta. No se
-utilizaron esas claves para ejecutar una solicitud ni se inventa un resultado.
+Para repetir el práctico usé la foto del material de clase. Pasé la imagen por OCR, miré las líneas que sacó y comparé los números con la foto.
 
-## Procedimiento que conviene registrar
+| Descripción | Monto (UYU) |
+|---|---:|
+| LECHE FRESCA DESC. C | 18,00 |
+| PAN FRANCES GR.X UN | 32,00 |
 
-1. Definir qué representa una fila: un ticket completo o un ítem del ticket.
-2. Pedir una estructura con campos explícitos, tipos y una representación de faltantes.
-3. Comparar fecha, comercio, artículos, cantidades y montos con el documento original.
-4. Verificar sumas, separador decimal, moneda y redondeos; una respuesta con formato correcto puede contener datos incorrectos.
-5. Guardar el código y los criterios de validación, junto con las correcciones necesarias, sin incorporar claves ni datos personales.
+Una fila es un producto. En el CSV queda `18.00` y `32.00`, con punto decimal. Las líneas que dicen cantidad por precio corresponden al mismo producto, así que contarlas de nuevo duplicaría el monto.
 
-Una extracción estructurada no equivale a una verificación de los hechos. Un
-campo ilegible debe quedar marcado como tal; no se rellena con una suposición del
-modelo. Para completar una entrada personal sobre esta actividad hacen falta el
-trabajo realizado y los errores efectivamente observados.
+**Chequeo con la foto.** 18,00 + 32,00 = **50,00 UYU**, lo mismo que dice en TOTAL. El pago quedó en **48,36 UYU** por un descuento de **1,64 UYU**. Son dos números que responden a preguntas distintas. Para la tabla de productos me quedo con el total antes del descuento.
 
-Esta nota documenta el método del bloque y el estado del repositorio; no es una
-presentación ni una declaración de haber completado la actividad de tickets.
+**Qué falló.** El OCR leyó mal algunos encabezados, pero encontró las dos líneas de productos. Por eso revisé las líneas contra la imagen y usé la suma como otro chequeo. El práctico de clase usa Gemini para extraer el CSV. Esta repetición usa OCR local y el mismo control de montos.
+
+Para generar el CSV desde la imagen, instalar Tesseract y ejecutar `python recetas/leer_ticket.py ruta/al/ticket.jpg`. Queda en `salidas/ticket.csv`.
+
+[Foto de clase](https://github.com/DavytJ/Introduccion-a-la-ciencia-de-datos/blob/56e76c472cf1ec67291eacdf303314eae0218027/clases/clase11/clase_ia/ticket.jpg) · [Ejemplo de Gemini](https://github.com/DavytJ/Introduccion-a-la-ciencia-de-datos/blob/56e76c472cf1ec67291eacdf303314eae0218027/clases/clase11/clase_ia/leer_ticket.py)

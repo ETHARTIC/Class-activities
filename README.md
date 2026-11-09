@@ -1,74 +1,35 @@
-# Bitácora personal — Ethan / ETHARTIC
+# Bitácora de Ciencia de Datos
 
-Introducción a la Ciencia de Datos · Universidad de Montevideo · 2026.
+Ethan Schcolnik · Universidad de Montevideo · 2026
 
-Esta bitácora reúne los trabajos de clase, las correcciones y las decisiones que
-permiten repetirlos. La organización se regularizó el **27/10/2026**. Las fechas de los commits anteriores
-se conservan. Las resoluciones nuevas no se presentan como entregas hechas antes.
+Acá tengo las actividades, los scripts y las notas de qué hice con cada tabla. Las fechas del [diario](diario/README.md) indican la semana del trabajo. Algunas entradas las armé después a partir de los archivos y commits que quedaron.
 
-## Por dónde empezar
+## Trabajos
 
-- [Estado de cada actividad y pendientes](ESTADO.md).
-- [Diario y cronología comprobable](diario/README.md).
-- [Decisiones de limpieza y método](decisiones.md).
-- [Errores encontrados y cómo se corrigieron](errores/registro.md).
-- [Qué se ejecutó y qué falta verificar](VALIDACION.md).
-
-## Actividades y respuestas
-
-| Bloque | Trabajo y explicación |
+| Clase o tema | Archivo |
 |---|---|
-| Caja negra propia | [Ocho objetos y medición](recetas/objetos_a_ciegas.md) · [código](recetas/objetos_a_ciegas.py) |
-| Fundamentos | [12 respuestas justificadas](recetas/fundamentos.md) |
-| Crear y volver a cargar | [Ocho respuestas y resultados](recetas/clase03_respuestas.md) · [código](recetas/clase03_crear_y_cargar.py) |
-| Carga y perfilado | [Residuos y playas](recetas/carga_y_perfilado.md) · [código](recetas/carga_y_perfilado.py) |
-| Encuestas | [Cuestionario y seis correcciones](recetas/encuestas.md) |
-| Visualización RSNA | [Notebook corregido](Actividades-de-clase/scripts/trabajo-creacion-grafico.ipynb) · falta recuperar train.csv |
-| IA y extracción de datos, clase 11 | [Procedimiento de validación y alcance](recetas/ia_y_validacion.md) |
-| Tránsito y aire | [Siete respuestas y resultados](recetas/transito_resultados.md) · [práctico resuelto](<Actividades-de-clase/scripts/clase12_ejercicios(1).py>) |
-| Preguntas y series, clase 14 | [Notas y actividad de tarjetas](recetas/clase14_preguntas_y_series.md) · [código de series](recetas/clase14_series.py) |
-| Errores de programación | [12 respuestas del PDF original](recetas/errores_opcion_multiple.md) |
-| Recetas complementarias | [Flujo, transformaciones, uniones, gráficos y series](recetas/flujo_y_visualizacion.md) |
+| Objetos a ciegas | [Notebook](Actividades-de-clase/data/Objetos_a_ciegas.ipynb) · [Notas](recetas/objetos_a_ciegas.md) |
+| Clase 3 | [Fundamentos](recetas/fundamentos.md) · [Ejercicios 1 a 8](recetas/clase03_respuestas.md) · [Desafío](recetas/clase03_desafio.md) |
+| Clases 4 y 5 | [Residuos y playas](recetas/carga_y_perfilado.md) · [Preguntas sobre errores](recetas/errores_opcion_multiple.md) |
+| Clase 6 | [Encuesta de cafetería](recetas/encuestas.md) |
+| Gráfico de rodilla | [Notebook RSNA](Actividades-de-clase/scripts/trabajo-creacion-grafico.ipynb) |
+| Clase 11 | [Leer un ticket](recetas/ia_y_validacion.md) |
+| Tránsito y aire | [Siete ejercicios](recetas/transito_resultados.md) |
+| Clase 14 | [Uniones](recetas/clase14_uniones.md) · [Titulares](recetas/clase14_titulares.md) · [Series](recetas/clase14_preguntas_y_series.md) |
+| Clase 15 | [Comparar grupos](recetas/clase15_experimento.md) |
+| Apuntes | [Flujo de análisis](recetas/flujo_y_visualizacion.md) · [Lecturas](recetas/lecturas.md) |
 
-## Cómo reproducir
+## Para correr el código
 
-Python 3.11 o superior, desde una copia local del repositorio:
+Desde la carpeta del repositorio, con Python 3.11 o más nuevo:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python3 -m pip install -r requirements.txt
-python3 verificar.py
+python -m pip install -r requirements.txt
+python verificar.py
 ```
 
-En Windows, activar con `.venv\Scripts\activate` y usar `python` si corresponde.
-La primera ejecución descarga los CSV necesarios desde las fuentes documentadas;
-no requiere claves de IA. Con los archivos en caché, los prácticos funcionan sin red.
-`verificar.py` genera tablas y gráficos en `salidas/`, comprueba los resultados y
-contrasta las regresiones con una matriz calculada mediante NumPy.
+La primera vez se descargan los CSV de tránsito, playas y residuos. Los datos se guardan en `datos/crudos/` y los resultados en `salidas/`. Para el ticket hace falta Tesseract y para recalcular RSNA desde las etiquetas originales hace falta el `train.csv` de Kaggle. Cada receta tiene el comando que usé.
 
-Para recuperar solo una fuente: `python3 datos/obtener.py playas`. Para actualizar
-una descarga: `python3 datos/obtener.py playas --actualizar`.
-El archivo de playas se actualiza en origen: su cantidad de filas puede cambiar.
+[Qué falta confirmar](ESTADO.md) · [Decisiones](decisiones.md) · [Errores](errores/registro.md) · [Fuentes de datos](datos/FUENTES.md) · [Comprobaciones](VALIDACION.md)
 
-## Organización
-
-- `diario/`: entradas basadas en evidencia del historial y regularización actual.
-- `funciones/`: utilidades documentadas y con casos de prueba.
-- `recetas/`: soluciones y procedimientos reutilizables.
-- `errores/`: diagnóstico, manifestación y corrección de problemas reales.
-- `datos/`: código para obtener o generar los datos; crudos y generados ignorados por Git.
-- `Actividades-de-clase/`: ubicación conservada para los trabajos originales, con rutas corregidas.
-- `salidas/`: se regenera al ejecutar; no se versiona.
-
-## Fuentes y alcance
-
-Referencia principal: [repositorio de Joselina Davyt](https://github.com/DavytJ/Introduccion-a-la-ciencia-de-datos),
-versión `ee2f4a1e1eb4fb2bd6e38d3b8ec85a73867f6dff`.
-Las consignas y la preparación del práctico de tránsito provienen de la docente.
-El generador de caja se adaptó de su material, con atribución en el código.
-[Fuentes de datos](datos/FUENTES.md).
-
-El programa pide una bitácora **privada**, con acceso de lectura para la docente.
-La visibilidad y el acceso deben verificarse en Settings. La regularización no
-reemplaza los commits semanales que faltan ni acredita participación no documentada.
+[Material de la profesora](https://github.com/DavytJ/Introduccion-a-la-ciencia-de-datos)

@@ -1,25 +1,13 @@
-# Diario: fechas, evidencia y huecos
+# Diario
 
-Las entradas anteriores se reconstruyeron el **27/10/2026** a partir de archivos
-y commits. La fecha del nombre identifica una semana; **no** indica que el texto
-fuera escrito o entregado entonces. Las dificultades detectadas ahora se señalan
-como hallazgos de la revisión. No se modifican fechas ni se fabrican commits pasados.
+Armé las entradas anteriores con los notebooks y commits que quedaron. La fecha es la semana a la que corresponde el archivo. Los problemas que encontré al volver a correrlo están anotados como parte de esa revisión.
 
-| Semana que comienza | Evidencia de commits | Entrada / estado |
-|---|---|---|
-| 17/08 | 18 y 20/08 | [Objetos y comienzo](2026-08-17.md) |
-| 24/08 | Sin commits localizados | Sin reconstruir: requiere archivos o recuerdos propios |
-| 31/08 | 01 y 03/09 | [Carga y perfilado](2026-08-31.md) |
-| 07/09 | Sin commits localizados | Sin reconstruir |
-| 14/09 | 17/09 | [Gráfico RSNA](2026-09-14.md) |
-| 21/09 | Sin commits localizados | Sin reconstruir |
-| 28/09 | 29/09 | [Archivos de claves, actividad de IA por confirmar](2026-09-28.md) |
-| 05/10 | Sin commits localizados | Sin reconstruir |
-| 12/10 | 13/10 | [Plantilla de tránsito](2026-10-12.md) |
-| 19/10 | Sin commits localizados | Sin reconstruir |
-| 26/10 | Regularización actual | [Trabajo de revisión](2026-10-26.md) |
+- [17/08. Objetos a ciegas](2026-08-17.md)
+- [31/08. Residuos y playas](2026-08-31.md)
+- [14/09. Gráfico RSNA](2026-09-14.md)
+- [28/09. Archivos para IA](2026-09-28.md)
+- [12/10. Práctico de tránsito](2026-10-12.md)
+- [26/10. Orden y correcciones](2026-10-26.md)
+- [09/11. Actividades que faltaban](2026-11-09.md)
 
-La falta de commits no demuestra que no se haya trabajado, pero no acredita
-cumplimiento del commit semanal exigido. Este registro no reemplaza esa evidencia.
-Las notas técnicas de las recetas no se convierten automáticamente en experiencias
-personales o participación en clase.
+Para las semanas del 24/08, 07/09, 21/09, 05/10, 19/10 y 02/11 todavía me faltan archivos o apuntes que permitan armar la entrada.

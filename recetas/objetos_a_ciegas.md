@@ -1,21 +1,9 @@
-# Caja negra: los ocho objetos propios
+# Objetos a ciegas
 
-Fuente: `Actividades-de-clase/data/Objetos_a_ciegas.ipynb`, incorporado el 20/08/2026.
-El notebook registra ocho objetos y seis atributos binarios: movimiento, blando,
-flexible, plástico, metal y liso. No es el dataset de diez filas que trae el
-práctico docente: se conservan ambos casos por separado.
+En el notebook anoté 8 objetos y 6 cosas que podía marcar con 1 o 0. Una fila corresponde a un objeto. Por ejemplo, algo puede ser flexible y de plástico a la vez, así que puedo marcar las dos columnas con 1.
 
-Una fila representa un objeto registrado. `objeto` funciona como identificador
-candidato en estas ocho filas; no demuestra que los nombres sirvan como clave
-para futuros relevamientos. Los seis atributos se codifican 1 = presencia y
-0 = ausencia observada. No son categorías excluyentes: un objeto puede ser
-flexible y de plástico al mismo tiempo.
+El nombre alcanza para distinguir estos ocho objetos. Si agrego otros con el mismo nombre, tendría que darles un ID. Un 0 indica que marqué el atributo como ausente. Si no pude saberlo, lo dejaría como faltante. En el notebook quedó el recuento pero no cuánto tiempo duró cada observación.
 
-El proceso generador incluye el objeto, lo que se alcanzó a observar, la
-interpretación y la codificación. El notebook no documenta el instrumento ni el
-tiempo exacto de la medición propia: esos datos no se completan por suposición.
-Tampoco se reemplaza un atributo desconocido por 0.
+`python recetas/objetos_a_ciegas.py` abre los datos del notebook, revisa que sean 0 y 1 y cuenta cuántos objetos tienen cada atributo.
 
-El script `objetos_a_ciegas.py` recupera el diccionario literal del notebook,
-comprueba ocho filas y atributos 0/1, y calcula frecuencias. Estas describen los
-ocho objetos; no son proporciones representativas de una población de objetos.
+[Notebook original](../Actividades-de-clase/data/Objetos_a_ciegas.ipynb)

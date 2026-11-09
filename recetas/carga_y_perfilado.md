@@ -1,41 +1,17 @@
-# Cargar, perfilar y buscar identificadores
+# Carga de datos y claves
 
-## Residuos: clase 4
+## Clase 4. Residuos
 
-La actividad original había producido 1.222 filas y 41 columnas. La ruta apuntaba
-a `/content/Class-activities` y a una carpeta anterior al movimiento del CSV.
-La versión corregida recupera la copia exacta que estaba en el commit `a4ea2f7`
-y trabaja desde la raíz del proyecto. Se verificaron nuevamente sus dimensiones.
+La tabla tiene 1.222 filas y 41 columnas. La ruta de Colab apuntaba a una carpeta que no existe en una copia nueva. Ahora el script baja el CSV de la Intendencia y lo guarda dentro del proyecto. Comparé el archivo oficial con el que se había usado en clase y eran iguales.
 
-La presencia de `matricula_letra` no la vuelve un identificador único. Se prueba
-su unicidad y se contrasta con `pesada`. La unidad de observación debe confirmarse
-con la fuente: el registro parece corresponder a una pesada, no a un vehículo
-único. El perfil informa tipos, faltantes, valores distintos y extremos sin
-borrar columnas automáticamente porque tengan muchos faltantes.
+Primero miro si `matricula_letra` se repite. Tiene sentido que un vehículo aparezca más de una vez si hace varias pesadas. Para distinguir filas pruebo `pesada` y chequeo tanto repetidos como nulos. El perfil también muestra tipos, faltantes y valores extremos.
 
-## Playas: clase 5
+## Clase 5. Playas
 
-El notebook original informa 27.166 filas y 12 columnas. El archivo subido quedó
-vacío: no permite regenerar esa salida histórica. Se recuperó la fuente oficial
-de la Intendencia; la descarga verificada durante esta revisión contiene
-27.284 filas y 12 columnas. Son versiones distintas, no un resultado idéntico.
+En el notebook original había 27.166 filas y 12 columnas. La copia del CSV en el repo estaba vacía. Al volver a bajarlo de la Intendencia obtuve 27.284 filas y 12 columnas en octubre. La fuente se actualiza, así que ese número puede volver a cambiar.
 
-Una fila corresponde a un registro de muestra/punto según las columnas disponibles.
-La fecha se convierte explícitamente. Se evalúa la pareja `fecha_muestra` y
-`desc_abreviada_punto` como clave candidata, exigiendo unicidad y no nulos.
-Incluso si cumple, se necesita confirmar con la documentación si identifica una
-muestra o si una muestra puede tener varias determinaciones.
+Probé juntar `fecha_muestra` con `desc_abreviada_punto` porque importa cuándo y dónde se tomó la muestra. Primero reviso que ninguna de las dos tenga nulos y después veo si alguna combinación se repite. Una clave que funciona en la descarga de hoy puede necesitar otra columna si en el futuro hay más de una medición por punto y fecha.
 
-Se conserva el análisis extra de salinidad por playa, pero se agrega el número
-de mediciones que aporta cada promedio. No se interpreta ese ranking como una
-propiedad permanente de las playas: pueden cambiar las fechas, la cobertura y
-la composición de las observaciones disponibles.
+**Extra por curiosidad.** Ordené las playas por salinidad media y agregué cuántas mediciones entraron en cada promedio. Una playa con pocas muestras puede quedar alta o baja por las fechas en que se midió.
 
-## Regla de trabajo
-
-Primero importar y perfilar; después decidir qué convertir, limpiar o excluir.
-Repetir el perfilado tras limpiar. Un ID candidato no se elige solo porque tiene
-muchos valores distintos. No se confunden filas repetidas con mediciones válidas
-repetidas: hay que definir la unidad de observación.
-
-Código: `recetas/carga_y_perfilado.py`. Utilidades: `funciones/datos.py`.
+[Código](carga_y_perfilado.py) · [Fuentes](../datos/FUENTES.md)

@@ -1,47 +1,11 @@
 # Fuentes de datos
 
-## Caja negra didáctica
+- **Objetos a ciegas.** Ocho filas y siete columnas en el [notebook original](../Actividades-de-clase/data/Objetos_a_ciegas.ipynb), del 20/08.
+- **Ejercicios de clase 3.** Diez observaciones de ejemplo. El [generador de clase](https://github.com/DavytJ/Introduccion-a-la-ciencia-de-datos/blob/ee2f4a1e1eb4fb2bd6e38d3b8ec85a73867f6dff/clases/clase3/generar_archivos.py) usa la semilla 42. La serie del desafío tiene otros 10 valores de ejemplo escritos en el script.
+- **Residuos.** CSV de la Intendencia de Montevideo, 1.222 filas y 41 columnas. Lo descargué el 09/11/2026 y coincide byte por byte con la copia anterior. Licencia de Datos Abiertos de Gobierno de Uruguay. [Ficha del CSV](https://catalogodatos.gub.uy/dataset/estacion-de-transferencia-de-residuos-solidos-urbanos/resource/3f9b098b-fb30-47c6-a367-911bb0d1bf49).
+- **Playas.** Intendencia de Montevideo, licencia de Datos Abiertos de Gobierno de Uruguay. La descarga del 09/11/2026 dio 27.441 filas y 12 columnas. La cantidad cambia al actualizarse la fuente. [Ficha del CSV](https://catalogodatos.gub.uy/dataset/monitoreo-de-agua-de-playas/resource/b143b5d2-5721-4efd-8ac5-9edb6e1ae3ac).
+- **Tránsito y aire.** Junio de 2024, 2.160 filas y cinco columnas de entrada. Cada fila es una estación a una hora. La descarga apunta a la misma versión que usé en el práctico. [CSV de la profesora](https://github.com/DavytJ/Introduccion-a-la-ciencia-de-datos/blob/ee2f4a1e1eb4fb2bd6e38d3b8ec85a73867f6dff/clases/clase10/transito_aire_junio2024.csv).
+- **Rodilla.** El gráfico guardado corresponde a los 58 estudios con las etiquetas completas. El notebook puede tomar ese recuento o volver a leer el CSV si está disponible. El archivo se guarda localmente en `datos/crudos/rsna/train.csv`. [Archivos y condiciones de Kaggle](https://www.kaggle.com/competitions/rsna-knee-abnormality-detection/data).
+- **Comparación de grupos.** Veinte filas simuladas con semilla 123 según el [script de clase 15](https://github.com/DavytJ/Introduccion-a-la-ciencia-de-datos/blob/56e76c472cf1ec67291eacdf303314eae0218027/clases/clase15/analisis_datos_experimento.py).
 
-Generador adaptado de [Joselina Davyt, clase 3](https://github.com/DavytJ/Introduccion-a-la-ciencia-de-datos/blob/ee2f4a1e1eb4fb2bd6e38d3b8ec85a73867f6dff/clases/clase3/generar_archivos.py).
-Diez observaciones didácticas; no son nuevas mediciones del estudiante. La semilla
-42 fija la generación del archivo del equipo vecino. Se regeneran los CSV.
-No se identificó una licencia general del repositorio docente.
-
-## Ocho objetos propios
-
-Diccionario del notebook personal, incorporado el 20/08/2026. Ocho filas y siete
-columnas. Los datos de objetos se conservan en el código original. La documentación
-no permite afirmar un instrumento ni tiempo de medición exactos del caso propio.
-
-## Residuos
-
-Copia histórica usada en clase: [commit a4ea2f7](https://github.com/ETHARTIC/Class-activities/tree/a4ea2f724513a3832f17a5c72efc6c808c7299b6/Actividades-de-clase/data/Archivos_de_base_de_datos).
-Se recupera por URL fijada a ese commit, no desde una ruta cambiante. 1.222 filas,
-41 columnas en la revisión. El material declara como origen el catálogo de datos
-abiertos de Uruguay; falta recuperar la ficha específica para completar licencia.
-La regularización retira el CSV de la versión actual de Git y conserva su obtención.
-
-## Agua de playas
-
-[Catálogo oficial: Datos de calidad de agua en playas](https://catalogodatos.gub.uy/dataset/monitoreo-de-agua-de-playas/resource/b143b5d2-5721-4efd-8ac5-9edb6e1ae3ac).
-Organismo: Intendencia de Montevideo. Licencia indicada: Licencia de DAG de Uruguay.
-Descarga verificada en la revisión: 27.284 filas, 12 columnas. El notebook anterior
-mostraba 27.166 filas. La fuente se actualiza y esos números no tienen que coincidir.
-El script registra fecha de obtención, dimensiones y SHA-256 de cada descarga nueva
-en un archivo local junto al CSV.
-
-## Tránsito y aire
-
-[CSV del curso fijado a una versión](https://github.com/DavytJ/Introduccion-a-la-ciencia-de-datos/blob/ee2f4a1e1eb4fb2bd6e38d3b8ec85a73867f6dff/clases/clase10/transito_aire_junio2024.csv).
-2.160 filas y cinco columnas originales. Junio de 2024; una fila por estación-hora.
-Se conserva el carácter de material docente y no se afirma que sean mediciones
-propias. No se identificó licencia general del repositorio del curso.
-
-## RSNA / Kaggle
-
-[Competencia](https://www.kaggle.com/competitions/rsna-knee-abnormality-detection).
-Se necesita únicamente train.csv para repetir el filtrado y el gráfico. La obtención
-puede requerir cuenta y aceptación de condiciones. No se copian los datos ni las
-imágenes al repositorio. El archivo no estaba disponible para esta revisión;
-58 estudios completos y 8 con una sola etiqueta positiva son resultados guardados
-en el notebook anterior, no cifras recalculadas ahora.
+`datos/obtener.py` deja los CSV de descarga en `datos/crudos/` junto a la fecha, dimensiones y huella de cada archivo.

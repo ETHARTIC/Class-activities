@@ -1,51 +1,21 @@
-# Verificación técnica — 27/10/2026
+# Comprobaciones
 
-## Ejecuciones completadas
+Última corrida: 09/11/2026, con Python 3.12.14, pandas 2.2.3 y statsmodels 0.15.0.
 
-- Los ocho ejercicios de creación/lectura de datos pasaron sus verificaciones.
-- La función de validación detecta los tres errores introducidos y acepta la tabla limpia.
-- La ida y vuelta CSV/Parquet comprueba valores y tipos; se documentó la reconstrucción de certeza ordinal.
-- El perfilado de residuos reproduce 1.222 filas y 41 columnas; la fuente actual de playas produjo 27.284 filas y 12 columnas.
-- Los siete ejercicios de tránsito se ejecutaron y generaron seis figuras y un JSON de resultados.
-- Las regresiones base y de noche se contrastaron con matrices de mínimos cuadrados mediante NumPy; tolerancias 1e-10 para R² y 1e-9 relativa para coeficientes.
-- La receta de series verifica 720 horas consecutivas, reconstrucción de niveles, diferencias de caminata y ACF propia contrastada con statsmodels a tolerancia 1e-12.
-- Se ejecutaron las celdas de los cuatro notebooks con un espacio nuevo por notebook. En RSNA solo se verificó la rama de datos ausentes; no se verificó el cálculo con train.csv.
-- Una copia limpia, sin crudos, datos generados ni resultados, descargó las tres fuentes y completó `python3 verificar.py` desde fuera de la carpeta del proyecto.
-- Se inspeccionaron visualmente el gráfico de series/correlogramas y el gráfico final de tránsito por tipo de día.
+- `python verificar.py` descargó o leyó los CSV y corrió los ejercicios de caja negra, carga, tránsito, series, desafío, titulares y comparación de grupos.
+- El desafío vuelve a leer el CSV en otro proceso. Coincidieron las 10 filas, el orden de los meses y sus valores.
+- En tránsito volví a calcular R² y los coeficientes del modelo de noche con NumPy. Coincidieron con statsmodels.
+- Para las uniones 58 a 61 comparé las cuentas con las soluciones y repetí los cruces pequeños con pandas.
+- El OCR del ticket encontró dos ítems. Revisé la foto, los montos y el total de 50 UYU.
+- Corrí las celdas de los notebooks. En RSNA comprobé las 12 barras contra la imagen anterior. La ruta que lee un CSV se probó con tres filas de prueba. Para repetir esa ruta con los estudios reales falta el archivo de Kaggle.
+- Revisé los enlaces a archivos dentro del repo.
 
-## Entorno comprobado
+| CSV | Filas | Columnas |
+|---|---:|---:|
+| Residuos | 1.222 | 41 |
+| Playas | 27.441 | 12 |
+| Tránsito y aire | 2.160 | 5 |
 
-Python 3.12.14.
+Los ejemplos de R quedaron como respuestas de lectura. Las comprobaciones se hicieron en Python y las descargas se registran en los archivos `.fuente.json` junto a cada CSV.
 
-| Paquete | Versión |
-|---|---|
-| NumPy | 2.3.5 |
-| pandas | 2.2.3 |
-| Matplotlib | 3.10.8 |
-| SciPy | 1.17.0 |
-| statsmodels | 0.15.0 |
-| pyarrow | 26.0.0 |
-
-Las dependencias admiten un rango de versiones en requirements.txt. Estos
-resultados corresponden al entorno de esta tabla; los comportamientos de tipos
-pueden variar. Las verificaciones buscan detectar esas diferencias.
-
-## Huellas de las fuentes en la copia limpia
-
-| Archivo | Filas | Columnas | SHA-256 |
-|---|---:|---:|---|
-| residuos_2023.csv | 1222 | 41 | `d9c060344a6cc8ace192e80e10ebfb9df4c07bce1bc94364bbe6981edb417e4e` |
-| playas.csv | 27284 | 12 | `bf6da09bee72067fc0b5073e815c56ff8746d81a87abdce76937436b45e7757b` |
-| transito_aire_junio2024.csv | 2160 | 5 | `df90b9d15ee10f8848c6c2154351075628dc455422389ce9310d26a2f5696b5d` |
-
-La fuente de playas es dinámica y puede cambiar. Los otros dos archivos se
-obtienen de commits fijados. Cada descarga nueva guarda localmente su fecha,
-dimensiones y huella junto al CSV.
-
-## Límites de la verificación
-
-No se ejecutaron ejemplos específicos de R, solicitudes a servicios de IA ni el
-análisis numérico de RSNA sin su CSV. No se dispone de las tarjetas de noticias ni
-de información suficiente para resolver el desafío del equipo. La verificación
-técnica no acredita la revisión personal ni el dominio del estudiante, que deben
-completarse. No se realizaron cambios retrospectivos en las fechas de commits.
+[Fuentes y fechas de descarga](datos/FUENTES.md)
