@@ -1,0 +1,14 @@
+# Datos y resultados se regeneran con el código.
+datos/crudos/
+datos/generados/
+salidas/
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.*
+!.env.example
+**/claves_ia/
+**/Clave_*.txt
+.ipynb_checkpoints/
+.DS_Store

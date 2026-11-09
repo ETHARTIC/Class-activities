@@ -1,3 +1,6 @@
+# Consignas y preparación: Joselina Davyt.
+# Resolución y adaptación de rutas: revisión del 27/10/2026.
+# Ver recetas/transito_resultados.md para alcance y verificaciones.
 # =============================================================================
 # Clase 12. Tránsito y calidad del aire, junio de 2024 — Ejercicios
 # Versión en Python (pandas + matplotlib + statsmodels)
@@ -32,12 +35,30 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import statsmodels.formula.api as smf
+from pathlib import Path
+import json
+import sys
+RAIZ = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(RAIZ))
+from funciones.datos import leer_csv
+SALIDA = RAIZ / "salidas/transito"
+SALIDA.mkdir(parents=True, exist_ok=True)
+RESULTADOS = {}
+FIGURA = 0
+
+
+def guardar_figura(fig):
+    global FIGURA
+    FIGURA += 1
+    fig.savefig(SALIDA / f"grafico_{FIGURA:02d}.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
 
 # Para que print() muestre todas las columnas de una tabla, sin cortarla con "...".
 pd.set_option("display.max_columns", None)
 pd.set_option("display.width", 200)
 
-RUTA = "clases/clase10/transito_aire_junio2024.csv"   # cambiar si los datos están en otra carpeta
+RUTA = RAIZ / "datos/crudos/transito_aire_junio2024.csv"
 
 COL_TRANSITO = "#2E86AB"
 COL_NO2      = "#7B4B2A"
@@ -46,7 +67,9 @@ COL_OSCURO   = "#5C3A21"
 
 # ---- La tabla original -------------------------------------------------------
 # parse_dates le dice a pandas que la columna hora es una fecha.
-aire = pd.read_csv(RUTA, parse_dates=["hora"])
+aire = leer_csv(RUTA, parse_dates=["hora"])
+assert len(aire) == 2160
+assert not aire.duplicated(["estacion", "hora"]).any()
 
 # ---- Variables nuevas --------------------------------------------------------
 datos = aire.copy()
@@ -113,9 +136,13 @@ print(modelo_tc3.rsquared)          # 0,47
 # 3. ¿Qué variable nueva tiene faltantes? ¿De dónde salen?
 # -----------------------------------------------------------------------------
 
-
-
-
+# Resolución
+columnas = ["transito", "no2", "pm25", "franja", "tipo_dia", "transito_rel", "log_pm25"]
+faltantes = datos[columnas].isna().groupby(datos["estacion"]).sum()
+print(faltantes)
+assert datos["log_pm25"].isna().equals(datos["pm25"].isna())
+assert np.isfinite(datos["log_pm25"].dropna()).all()
+RESULTADOS["ej1_faltantes"] = faltantes.astype(int).to_dict(orient="index")
 
 #%%
 # =============================================================================
@@ -139,7 +166,7 @@ ax.bar(por_hora["h"], por_hora["transito"], color=colores)
 ax.set_title("Tránsito promedio por hora del día, Tres Cruces, lunes a viernes")
 ax.set_xlabel("Hora del día (en color: hora pico)")
 ax.set_ylabel("Vehículos por hora")
-plt.show()
+guardar_figura(plt.gcf())
 
 # 1. Mirar el gráfico: ¿las barras oscuras son las más altas?
 #    Anotar qué horas están mal clasificadas.
@@ -148,9 +175,24 @@ plt.show()
 # 3. Repetir el gráfico con la variable nueva en lugar de hora_pico.
 # -----------------------------------------------------------------------------
 
-
-
-
+# Resolución
+# Criterio explícito: conservar seis horas pico, tomando las seis medias
+# de tránsito más altas de lunes a viernes en Tres Cruces. Es descriptivo:
+# no demuestra que estas horas sean las máximas en otro mes o estación.
+medias_hora = semana_tc.groupby("h")["transito"].mean()
+horas_nuevas = medias_hora.sort_values(ascending=False, kind="stable").head(6).index.tolist()
+horas_iniciales = [7, 8, 9, 17, 18, 19]
+datos["hora_pico_revisada"] = np.where(datos["h"].isin(horas_nuevas), "hora pico", "resto")
+fig, ax = plt.subplots(figsize=(9, 4.5))
+ax.bar(medias_hora.index, medias_hora.values,
+       color=[COL_OSCURO if h in horas_nuevas else "lightgrey" for h in medias_hora.index])
+ax.set(title="Seis horas de mayor tránsito medio: Tres Cruces, lunes a viernes",
+       xlabel="Hora del día", ylabel="Vehículos por hora")
+guardar_figura(fig)
+RESULTADOS["ej2"] = {"horas_pico_revisadas": sorted(map(int, horas_nuevas)),
+                      "marcadas_de_mas": sorted(set(horas_iniciales)-set(horas_nuevas)),
+                      "faltaba_marcar": sorted(set(horas_nuevas)-set(horas_iniciales))}
+print("Hora pico:", RESULTADOS["ej2"])
 
 #%%
 # =============================================================================
@@ -168,7 +210,7 @@ for ax, est in zip(axes, ESTACIONES):
 axes[0].set_ylabel("Tránsito relativo (1 = media de la estación)")
 fig.suptitle("Tránsito por franja horaria, relativo a la media de la estación")
 fig.tight_layout()     # acomoda los títulos para que no se pisen
-plt.show()
+guardar_figura(plt.gcf())
 
 # La tabla por_franja también tiene el promedio de pm25.
 #
@@ -179,9 +221,23 @@ plt.show()
 # 3. ¿En qué franja es máximo el PM2.5? ¿Es la misma que la del tránsito?
 # -----------------------------------------------------------------------------
 
-
-
-
+# Resolución
+fig, axes = plt.subplots(1, len(ESTACIONES), figsize=(14, 4.5), sharey=True)
+for ax, est in zip(axes, ESTACIONES):
+    parte = por_franja[por_franja["estacion"] == est]
+    ax.bar(parte["franja"].astype(str), parte["pm25"], color=COL_PM25)
+    ax.set_title(est)
+axes[0].set_ylabel("PM2.5 (µg/m³)")
+fig.suptitle("PM2.5 medio por estación y franja, junio de 2024")
+fig.tight_layout()
+guardar_figura(fig)
+maximos = {}
+for est in ESTACIONES:
+    parte = por_franja[por_franja["estacion"] == est]
+    maximos[est] = {"pm25": str(parte.loc[parte["pm25"].idxmax(), "franja"]),
+                    "transito": str(parte.loc[parte["transito_rel"].idxmax(), "franja"])}
+RESULTADOS["ej3_maximos"] = maximos
+print("Franjas de máximos:", maximos)
 
 #%%
 # =============================================================================
@@ -199,9 +255,14 @@ plt.show()
 # 3. ¿Mejoró el R²? ¿Mucho o poco?
 # -----------------------------------------------------------------------------
 
-
-
-
+# Resolución
+modelo_tc4 = smf.ols("no2 ~ transito_miles + pm25 + franja", data=tc).fit()
+assert modelo_tc4.nobs == modelo_tc3.nobs  # comparar sobre las mismas filas
+print(modelo_tc4.params)
+print("R²:", modelo_tc4.rsquared)
+RESULTADOS["ej4"] = {"n": int(modelo_tc4.nobs), "r2_base": float(modelo_tc3.rsquared),
+                      "r2_franja": float(modelo_tc4.rsquared),
+                      "coeficientes": modelo_tc4.params.to_dict()}
 
 #%%
 # =============================================================================
@@ -220,8 +281,15 @@ plt.show()
 # 3. Mostrar los coeficientes y el R². ¿Cuánto suma la noche?
 # -----------------------------------------------------------------------------
 
-
-
+# Resolución
+tc["noche"] = np.where(tc["franja"] == "noche", 1, 0)
+modelo_tc5 = smf.ols("no2 ~ transito_miles + pm25 + noche", data=tc).fit()
+assert modelo_tc5.nobs == modelo_tc3.nobs
+print(modelo_tc5.params)
+print("R²:", modelo_tc5.rsquared)
+RESULTADOS["ej5"] = {"n": int(modelo_tc5.nobs), "r2": float(modelo_tc5.rsquared),
+                      "coeficientes": modelo_tc5.params.to_dict(),
+                      "pvalores_modelo_franja": modelo_tc4.pvalues.to_dict()}
 
 #%%
 # =============================================================================
@@ -246,7 +314,7 @@ ax.set_title("Tránsito y NO2 en Tres Cruces, por franja horaria")
 ax.set_xlabel("Miles de vehículos por hora")
 ax.set_ylabel("NO2 (µg/m³)")
 ax.legend()
-plt.show()
+guardar_figura(plt.gcf())
 # Qué vemos: cada franja tiene su recta, y no son paralelas.
 
 # Un modelo con interacción deja que la pendiente cambie según la franja.
@@ -261,8 +329,22 @@ plt.show()
 #    variable nueva. Mostrar los coeficientes y el R².
 # -----------------------------------------------------------------------------
 
-
-
+# Resolución
+# Verificar con pendientes numéricas lo que sugiere el gráfico.
+pendientes = {}
+for franja, parte in tc.groupby("franja", observed=True):
+    validos = parte[["transito_miles", "no2"]].dropna()
+    pendientes[str(franja)] = float(np.polyfit(validos["transito_miles"], validos["no2"], 1)[0])
+franja_empinada = max(pendientes, key=pendientes.get)
+tc["franja_empinada"] = np.where(tc["franja"].astype(str) == franja_empinada, 1, 0)
+modelo_tc6 = smf.ols("no2 ~ transito_miles * franja", data=tc).fit()
+modelo_tc7 = smf.ols("no2 ~ transito_miles * franja_empinada", data=tc).fit()
+print("Pendientes:", pendientes)
+print(modelo_tc7.params)
+print("R²:", modelo_tc7.rsquared)
+RESULTADOS["ej6"] = {"pendientes": pendientes, "franja_empinada": franja_empinada,
+                      "n": int(modelo_tc7.nobs), "r2": float(modelo_tc7.rsquared),
+                      "coeficientes": modelo_tc7.params.to_dict()}
 
 #%%
 # =============================================================================
@@ -279,3 +361,29 @@ plt.show()
 #    nuevo con esas dos categorías.
 # 3. ¿Qué son los dos grupos?
 # -----------------------------------------------------------------------------
+
+# Resolución
+tarde = tc[tc["franja"] == "tarde"].copy()
+colores_dia = {"lunes a viernes": "#0072B2", "fin de semana": "#D55E00"}
+fig, ax = plt.subplots(figsize=(8, 5))
+for tipo, color in colores_dia.items():
+    parte = tarde[tarde["tipo_dia"] == tipo][["transito_miles", "no2"]].dropna()
+    ax.scatter(parte["transito_miles"], parte["no2"], s=15, alpha=.6, color=color, label=tipo)
+    pendiente, ordenada = np.polyfit(parte["transito_miles"], parte["no2"], 1)
+    x = np.array([parte["transito_miles"].min(), parte["transito_miles"].max()])
+    ax.plot(x, ordenada + pendiente*x, color=color)
+ax.set(title="Tres Cruces por la tarde: días de semana y fin de semana",
+       xlabel="Miles de vehículos por hora", ylabel="NO2 (µg/m³)")
+ax.legend()
+guardar_figura(fig)
+resumen_tarde = tarde.groupby("tipo_dia")[["transito_miles", "no2"]].mean()
+# Extensión pedida en R: permitir una pendiente distinta por tipo de día.
+modelo_tarde = smf.ols("no2 ~ transito_miles * tipo_dia", data=tarde).fit()
+RESULTADOS["ej7"] = {"medias_por_dia": resumen_tarde.to_dict(orient="index"),
+                      "n": int(modelo_tarde.nobs), "r2": float(modelo_tarde.rsquared),
+                      "coeficientes": modelo_tarde.params.to_dict()}
+print(resumen_tarde)
+print(modelo_tarde.params)
+(SALIDA / "resultados.json").write_text(json.dumps(RESULTADOS, ensure_ascii=False, indent=2), encoding="utf-8")
+print("Resultados guardados en salidas/transito/.")
+
